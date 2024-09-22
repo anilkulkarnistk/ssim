@@ -6,6 +6,10 @@ High Performance SSIM Parser for IATA Standard Schedules Information (Chapter 7)
 
 Warning: This is still in alpha and can undergo breaking changes.
 
+## Overview
+
+This parser is designed to handle the Standard Schedules Information Manual (SSIM) file format, widely used in the aviation industry to manage and exchange airline schedule data.
+
 ## Record Types
 
 SSIM consists of 5 different binary `Record Types` -
@@ -19,13 +23,21 @@ SSIM consists of 5 different binary `Record Types` -
 ## Running Application
 
 1. Make sure [Elixir](https://elixir-lang.org/install.html) is installed.
-2. Open terminal and start `iex`.
+2. Installation -
+
+    ```bash
+      git clone https://github.com/anilkulkarnistk/ssim.git
+      cd ssim
+      mix deps.get
+    ```
+
+3. Open terminal and start `iex`.
 
     ```bash
       iex -S mix
     ```
 
-3. Inside `iex` call the `parse_ssim` function and pass your file path.
+4. Inside `iex` call the `parse_ssim` function and pass your file path.
 
     ```bash
       iex(1)> file_path = "./sample/sample.ssim"
@@ -35,7 +47,7 @@ SSIM consists of 5 different binary `Record Types` -
 
     No specific file `ext` is needed for SSIM file name, for example instead of `sample.ssim` you could have just passed `sample_file` or `sample_file.ssm`, the extension does not matter as the file is read as binary.
 
-4. Parser writes the processed `SSIM` file as `json` file under `output` directory with `timestamp` as the file name, example -
+5. Parser writes the processed `SSIM` file as `json` file under `output` directory with `timestamp` as the file name, example -
 
     ```bash
       output/ssim_records_1727035431736.json
