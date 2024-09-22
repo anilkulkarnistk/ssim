@@ -4,6 +4,8 @@
 
 High Performance SSIM Parser for IATA Standard Schedules Information (Chapter 7)
 
+Warning: This is still in alpha and can undergo breaking changes.
+
 ## Record Types
 
 SSIM consists of 5 different binary `Record Types` -
@@ -16,7 +18,7 @@ SSIM consists of 5 different binary `Record Types` -
 
 ## Running Application
 
-1. Make sure `Elixir` is installed.
+1. Make sure [Elixir](https://elixir-lang.org/install.html) is installed.
 2. Open terminal and start `iex`.
 
     ```bash
