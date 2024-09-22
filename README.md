@@ -53,7 +53,7 @@ SSIM consists of 5 different binary `Record Types` -
       output/ssim_records_1727035431736.json
     ```
 
-## Optimizations -
+## Optimizations
 
 The intention was not only to write a `Correct` but also a `High Performance` parser, so the following optimizations have been done -
 
@@ -63,6 +63,53 @@ The intention was not only to write a `Correct` but also a `High Performance` pa
 4. Data is batched in `5000` records to process at one time.
 5. Actual record parsing uses highly optimized binary `Pattern Matching` instead of `Regex` or `Slicing`.
 6. Write buffer is used to write batches of `5000` records to minimize `disk access`.
+
+## Benchmarks
+
+Some basic benchmarks running the parser on my laptop -
+
+```bash
+    Operating System: Linux
+    CPU Information: Intel(R) Core(TM) i7-8565U CPU @ 1.80GHz
+    Number of Available Cores: 8
+    Available memory: 7.65 GB
+    Elixir 1.17.3
+    Erlang 26.2.5
+    JIT enabled: true
+
+    Benchmark suite executing with the following configuration:
+    warmup: 2 s
+    time: 10 s
+    memory time: 2 s
+    reduction time: 0 ns
+    parallel: 1
+    inputs: none specified
+    Estimated total run time: 14 s
+
+    Benchmarking SSIMParser ...
+    Calculating statistics...
+    Formatting results...
+
+    Name                 ips        average  deviation         median         99th %
+    SSIMParser         50.12       19.95 ms    ±20.77%       18.66 ms       36.14 ms
+
+    Memory usage statistics:
+
+    Name          Memory usage
+    SSIMParser       112.95 KB
+```
+
+For large files, I ran a simple time function -
+
+```bash
+time mix run -e "SSIM.Benchmark.run_large_ssim()"
+
+real    6m6.448s
+user    28m56.513s
+sys     6m30.474s
+```
+
+Approxiimately the parser is able to process about 1GB of data each miunte on my laptop.
 
 ## SSIM Reference
 
