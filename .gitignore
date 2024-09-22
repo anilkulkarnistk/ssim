@@ -32,3 +32,5 @@ ssim-*.tar
 /.elixir_ls
 
 /benchmarks
+
+/lib/benchmark
