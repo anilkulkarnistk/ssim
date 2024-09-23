@@ -25,30 +25,44 @@ defmodule SSIM.Parser do
   @buffer_size 5000
 
   def run(file_path) do
+    # Start the timer
+    start_time = System.monotonic_time(:millisecond)
+
     output_file_name = "#{@output_directory}ssim_records_#{:os.system_time(:millisecond)}.json"
     {:ok, output_file} = File.open(output_file_name, [:write, :append])
 
     # Write the opening bracket of the JSON array
     IO.write(output_file, "[")
 
-    file_path
-    # Stream in 16KB chunks
-    |> File.stream!(@file_chunk_size)
-    # Ensure 201-byte record alignment
-    |> Stream.transform("", &split_and_reassemble/2)
-    # Process 5000 records at a time
-    |> Stream.chunk_every(@buffer_size)
-    |> Task.async_stream(&process_chunk(&1, output_file),
-      max_concurrency: System.schedulers_online() * 2,
-      timeout: :infinity
-    )
-    |> Stream.run()
+    total_records =
+      file_path
+      # Stream in 16KB chunks
+      |> File.stream!(@file_chunk_size)
+      # Ensure 201-byte record alignment
+      |> Stream.transform("", &split_and_reassemble/2)
+      # Process 5000 records at a time
+      |> Stream.chunk_every(@buffer_size)
+      |> Task.async_stream(&process_chunk(&1, output_file),
+        max_concurrency: System.schedulers_online() * 2,
+        timeout: :infinity
+      )
+      |> Enum.reduce(0, fn {:ok, num}, acc -> num + acc end)
+
+    # |> Stream.run()
 
     # Write the closing bracket of the JSON array
     IO.write(output_file, "]")
 
     # Close the file
     File.close(output_file)
+
+    # End the timer
+    end_time = System.monotonic_time(:millisecond)
+    total_time = end_time - start_time
+
+    IO.puts("Total Records Parsed: #{total_records}.")
+    IO.puts("Total Elapsed Time: #{total_time}ms or #{Float.round(total_time / 1000)}sec.")
+    IO.puts("Processing Rate: #{round(total_records / total_time * 1000)}/sec.")
   end
 
   # Splits a chunk of binary data into exact 201-byte records and reassembles leftover partial records
@@ -63,7 +77,11 @@ defmodule SSIM.Parser do
   end
 
   # Process a chunk of 5000 records
-  defp process_chunk(records, output_file) do
+  def process_chunk(records, output_file) do
+    num_records = length(records)
+
+    Logger.info("Processing #{num_records} records...")
+
     json_chunk =
       records
       # Remove "\n" from each record, new chunk size is 200 bytes.
@@ -77,6 +95,8 @@ defmodule SSIM.Parser do
 
     # Write the chunk of JSON records at once
     IO.write(output_file, json_chunk)
+
+    num_records
   end
 
   # Parsing based on SSIM record types
