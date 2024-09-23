@@ -115,7 +115,7 @@ For large files (multiple GB), I ran a simple time function -
 
 Parser took around `6.28 m` to process large file.
 
-Approxiimately the parser is able to process about 1GB of data each miunte on my laptop.
+Approximately the parser is able to process about 1GB of data each miunte on my laptop.
 
 ## SSIM Reference
 
