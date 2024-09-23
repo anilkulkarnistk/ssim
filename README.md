@@ -99,23 +99,9 @@ Name           Memory usage
 SSIM_Parser       112.95 KB
 ```
 
-The sample SSIM has 550 records out of which 522 are valid records, the parser takes average **15.65 ms** to process **550 records** with just **112.95 KB** memory usage.
+For large files (multiple GB's), I am consistently able to process more than **50,000 records/sec** on my laptop. For small files the throughput would be comparatively less as concurrency also has its overhead, but as the file size grows, so does the throughput as we utlizie CPU cores more efficiently.
 
-That's equivalent to **35,143 records/sec**.
-
-For large files (multiple GB), I ran a simple time function -
-
-```bash
-  time mix run -e "SSIM.Benchmark.run_large_ssim()"
-
-  real    6m28.256s
-  user    27m5.224s
-  sys     6m47.721s
-```
-
-Parser took around `6.28 m` to process large file.
-
-Approximately the parser is able to process about 2GB of data/minute on my laptop.
+Benchmarking is very subjective and experience would be different for everyone.
 
 ## SSIM Reference
 
