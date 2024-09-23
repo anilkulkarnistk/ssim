@@ -86,32 +86,34 @@ parallel: 1
 inputs: none specified
 Estimated total run time: 14 s
 
-Benchmarking SSIMParser ...
+Benchmarking SSIM_Parser ...
 Calculating statistics...
 Formatting results...
 
-Name                 ips        average  deviation         median         99th %
-SSIMParser         50.12       19.95 ms    ±20.77%       18.66 ms       36.14 ms
+Name                  ips        average  deviation         median         99th %
+SSIM_Parser         63.91       15.65 ms    ±15.27%       15.34 ms       22.85 ms
 
 Memory usage statistics:
 
-Name          Memory usage
-SSIMParser       112.95 KB
+Name           Memory usage
+SSIM_Parser       112.95 KB
 ```
 
-The sample SSIM has about 522 records, the parser takes 19.95ms (~ 20 ms) to process it with just 112.95 KB memory usage. That's equivalent to 26,100 records/sec.
+The sample SSIM has 550 records out of which 522 are valid records, the parser takes average **15.65 ms** to process **550 records** with just **112.95 KB** memory usage.
+
+That's equivalent to **35,143 records/sec**.
 
 For large files (multiple GB), I ran a simple time function -
 
 ```bash
   time mix run -e "SSIM.Benchmark.run_large_ssim()"
 
-  real    6m6.448s
-  user    28m56.513s
-  sys     6m30.474s
+  real    6m28.256s
+  user    27m5.224s
+  sys     6m47.721s
 ```
 
-Parser took around `6.448 m` to process large file.
+Parser took around `6.28 m` to process large file.
 
 Approxiimately the parser is able to process about 1GB of data each miunte on my laptop.
 
