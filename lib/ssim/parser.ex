@@ -5,7 +5,7 @@ defmodule SSIM.Parser do
 
   require Logger
 
-  alias SSIM.{
+  alias SSIM.Tokenizer.{
     HeaderRecord,
     CarrierRecord,
     FlightLegRecord,
@@ -39,7 +39,7 @@ defmodule SSIM.Parser do
     # Process 5000 records at a time
     |> Stream.chunk_every(@buffer_size)
     |> Task.async_stream(&process_chunk(&1, output_file),
-      max_concurrency: System.schedulers_online(),
+      max_concurrency: System.schedulers_online() * 2,
       timeout: :infinity
     )
     |> Stream.run()
