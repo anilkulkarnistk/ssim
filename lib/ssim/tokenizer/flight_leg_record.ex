@@ -1,7 +1,7 @@
-defmodule SSIM.FlightLegRecord do
+defmodule SSIM.Tokenizer.FlightLegRecord do
   @moduledoc """
 
-  Flight Leg Record - Record Type 3
+  # Flight Leg Record - Record Type 3
 
   """
 

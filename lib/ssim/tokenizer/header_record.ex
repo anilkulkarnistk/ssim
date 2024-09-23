@@ -1,7 +1,7 @@
-defmodule SSIM.HeaderRecord do
+defmodule SSIM.Tokenizer.HeaderRecord do
   @moduledoc """
 
-  Header Record - Record Type 1
+  # Header Record - Record Type 1
 
   """
   require Logger

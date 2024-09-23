@@ -1,7 +1,7 @@
-defmodule SSIM.TrailerRecord do
+defmodule SSIM.Tokenizer.TrailerRecord do
   @moduledoc """
 
-  Trailer Record - Record Type 5
+  # Trailer Record - Record Type 5
 
   """
 

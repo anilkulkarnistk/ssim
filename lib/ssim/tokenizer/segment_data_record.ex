@@ -1,4 +1,4 @@
-defmodule SSIM.SegmentDataRecord do
+defmodule SSIM.Tokenizer.SegmentDataRecord do
   @moduledoc """
 
   # Segment Data Record - Record Type 4

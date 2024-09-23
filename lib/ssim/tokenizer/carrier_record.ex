@@ -1,7 +1,7 @@
-defmodule SSIM.CarrierRecord do
+defmodule SSIM.Tokenizer.CarrierRecord do
   @moduledoc """
 
-  Carrier Record - Record Type 2
+  # Carrier Record - Record Type 2
 
   """
 
