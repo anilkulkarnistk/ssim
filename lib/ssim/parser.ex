@@ -42,13 +42,13 @@ defmodule SSIM.Parser do
       |> Stream.transform("", &split_and_reassemble/2)
       # Process 5000 records at a time
       |> Stream.chunk_every(@buffer_size)
+      # Process chunks concurrently
       |> Task.async_stream(&process_chunk(&1, output_file),
         max_concurrency: System.schedulers_online() * 2,
         timeout: :infinity
       )
+      # Fetch the total number of records
       |> Enum.reduce(0, fn {:ok, num}, acc -> num + acc end)
-
-    # |> Stream.run()
 
     # Write the closing bracket of the JSON array
     IO.write(output_file, "]")
@@ -60,9 +60,9 @@ defmodule SSIM.Parser do
     end_time = System.monotonic_time(:millisecond)
     total_time = end_time - start_time
 
-    IO.puts("Total Records Parsed: #{total_records}.")
-    IO.puts("Total Elapsed Time: #{total_time}ms or #{Float.round(total_time / 1000)}sec.")
-    IO.puts("Processing Rate: #{round(total_records / total_time * 1000)}/sec.")
+    IO.puts("Total Records Parsed: #{total_records}")
+    IO.puts("Total Elapsed Time: #{total_time}ms or #{Float.round(total_time / 1000)}sec")
+    IO.puts("Processing Rate: #{round(total_records / total_time * 1000)}/sec")
   end
 
   # Splits a chunk of binary data into exact 201-byte records and reassembles leftover partial records
@@ -77,7 +77,7 @@ defmodule SSIM.Parser do
   end
 
   # Process a chunk of 5000 records
-  def process_chunk(records, output_file) do
+  defp process_chunk(records, output_file) do
     num_records = length(records)
 
     Logger.info("Processing #{num_records} records...")
