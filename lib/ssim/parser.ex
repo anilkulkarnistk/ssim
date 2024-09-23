@@ -28,6 +28,8 @@ defmodule SSIM.Parser do
     # Start the timer
     start_time = System.monotonic_time(:millisecond)
 
+    # Create output file
+    :ok = File.mkdir_p(@output_directory)
     output_file_name = "#{@output_directory}ssim_records_#{:os.system_time(:millisecond)}.json"
     {:ok, output_file} = File.open(output_file_name, [:write, :append])
 
