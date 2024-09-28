@@ -16,13 +16,13 @@ defmodule SSIM.Parser do
   @output_directory "output/"
 
   # Read file in 16KB chunks
-  @file_chunk_size 16 * 1024
+  @file_chunk_size 16 * 2 * 1024
 
   # SSIM records are 201 bytes
   @record_size 201
 
   # Buffer size for write operations
-  @buffer_size 5000
+  @buffer_size 10000
 
   def run(file_path) do
     # Start the timer
@@ -46,7 +46,7 @@ defmodule SSIM.Parser do
       |> Stream.chunk_every(@buffer_size)
       # Process chunks concurrently
       |> Task.async_stream(&process_chunk(&1, output_file),
-        max_concurrency: System.schedulers_online() * 2,
+        max_concurrency: System.schedulers_online(),
         timeout: :infinity
       )
       # Fetch the total number of records
